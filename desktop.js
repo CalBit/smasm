@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { spawn } from 'child_process';
 import { convert, warnings } from './SMASM.js';
 import './stdlib.js';
 
 // Define version
-const VERSION = '1.0.0';
+const VERSION = JSON.parse(fs.readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'package.json'), 'utf-8')).version;
 
 // Check arguments
 if (process.argv.length < 3) {
@@ -46,7 +48,8 @@ Options:
         process.exit(1);
       });
   }).catch((err) => {
-    console.error(`Error: There was a problem reading the file '${process.argv[2]}'`);
+    console.error(`Error: There was a problem reading/converting the file '${process.argv[2]}'\n`);
+    console.error(err);
     process.exit(1);
   });
 }
