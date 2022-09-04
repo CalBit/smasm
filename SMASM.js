@@ -146,6 +146,9 @@ export function convert(data) {
       // Make sure command exists
       if (!commands.hasOwnProperty(program[line].name))
         return error(program[line].line, `The command '${program[line].name}' is not defined`);
+      // Make sure return variable is provided
+      if (commands[program[line].name].returns !== program[line].returns)
+        return error(program[line].line, `The command '${program[line].name}' returns a value, but a variable is not provided`);
       // Make sure the correct number of arguments are provided
       if (commands[program[line].name].argumentCount !== null && commands[program[line].name].argumentCount !== args.length)
         return error(program[line].line, `Invalid number of arguments provided for the command '${program[line].name}'
