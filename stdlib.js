@@ -142,7 +142,7 @@ defineCommand('unitLocateBuilding', (varName, args) => {
   defineVariable(args[2]);
   defineVariable(args[3]);
   defineVariable(args[4]);
-  return `  ulocate building ${args[0].substring(1)} ${args[1]} null ${args[2]} ${args[3]} ${varName} ${args[4]}`;
+  return `  ulocate building ${args[0]} ${args[1]} null ${args[2]} ${args[3]} ${varName} ${args[4]}`;
 }, 5, true);
 defineCommand('unitLocateSpawn', (varName, args) => {
   defineVariable(args[0]);
