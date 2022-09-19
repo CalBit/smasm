@@ -169,13 +169,13 @@ Literals let you insert raw MASM code into your program
 The following are special variables defined by Mindustry that
 you can use in your programs. If you want to see more, check
 out https://mindustrygame.github.io/wiki/logic/3-variables/
-| Variable | Description                                                                         |
-| -------- | -----------                                                                         |
-| @this    | Holds the value of the current building (the microcontroller)                       |
-| @thisx   | Holds the x coordinate of the current microcontroller                               |
-| @thisy   | Holds the y coordinate of the current microcontroller                               |
-| @counter | Holds the current instruction index. This value can be modified as a way of jumping |
-| @time    | Holds the current UNIX timestamp                                                    |
+| Variable | Description                                                                             |
+| -------- | -----------                                                                             |
+| @this    | Holds the value of the current building (the microcontroller)                           |
+| @thisx   | Holds the x coordinate of the current microcontroller                                   |
+| @thisy   | Holds the y coordinate of the current microcontroller                                   |
+| @counter | Holds the index of the next instruction. This value can be modified as a way of jumping |
+| @time    | Holds the current UNIX timestamp                                                        |
 
 # Important Notes
 ALL variables are global. This includes arguments to functions.
@@ -188,7 +188,7 @@ run the defineFunctionStack command before defining any functions.
 
 It is recommended that you use an _ when you don't care about
 the return value of a function and simply care about it's side effects
-(e.g. `_ = call $myFunction`)
+(e.g. `_ = call myFunction`)
 
 The microcontroller will repeat your code once finished executing.
 The microcontroller will also keep variables even after already
