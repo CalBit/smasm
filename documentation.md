@@ -188,7 +188,7 @@ run the defineFunctionStack command before defining any functions.
 
 It is recommended that you use an _ when you don't care about
 the return value of a function and simply care about it's side effects
-(e.g. `_ = call $myFunction`)
+(e.g. `_ = call myFunction`)
 
 The microcontroller will repeat your code once finished executing.
 The microcontroller will also keep variables even after already
