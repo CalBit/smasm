@@ -24,6 +24,7 @@ if (process.argv[2] === '-h' || process.argv[2] === '--help') {
   smasm [file] [-f, --file?]
 
 Options:
+  -f, --file     Writes output to a file in addition to clipboard
   -h, --help     Displays this help page
   -v, --version  Displays version info`);
 } else if (process.argv[2] === '-v' || process.argv[2] === '--version') {
