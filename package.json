@@ -2,12 +2,12 @@
   "name": "smasm",
   "version": "1.0.3",
   "description": "Simplified Mindustry Assembly. A simpler way of writing Mindustry Assembly.",
-  "main": "desktop.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "node . test.smasm"
   },
-  "bin": "desktop.js",
+  "bin": "index.js",
   "author": "CalBit",
   "license": "MIT"
 }
