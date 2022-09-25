@@ -7,7 +7,7 @@ let functions = {};
 
 // Remapped commands
 defineCommand('read', (varName, args) => `  read ${varName} ${args[0]} ${args[1]}`, 2, true);
-defineCommand('write', args => `  write ${args[2]} ${args[0]} ${args[1]}`, 3, true);
+defineCommand('write', args => `  write ${args[2]} ${args[0]} ${args[1]}`, 3);
 
 defineCommand('clearScreen', args => `  draw clear ${args[0]} ${args[1]} ${args[2]}`, 3);
 defineCommand('setColor', args => `  draw color ${args[0]} ${args[1]} ${args[2]} ${args[3]}`, 4);
