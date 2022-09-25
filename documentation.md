@@ -158,8 +158,8 @@ Literals let you insert raw MASM code into your program
 | no      | endwhile            |                                         | Ends a while loop                                                                |
 | no      | section             | name                                    | Starts a subroutine                                                              |
 | no      | endsection          |                                         | Ends a subroutine                                                                |
-| no      | jumpsection         | name                                    | Runs a subroutine
-| no      | defineFunctionStack | cell                                    | Defines what cell should be used for the function call stack                     |
+| no      | jumpsection         | name                                    | Runs a subroutine                                                                |
+| no      | defineCallStack     | cell                                    | Defines what cell should be used for the function call stack                     |
 | no      | function            | name, [arg, arg, ...]                   | Starts a function                                                                |
 | no      | endfunction         |                                         | Ends a function                                                                  |
 | no      | return              | value                                   | Returns a value from a function and ends the function                            |

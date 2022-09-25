@@ -27,10 +27,14 @@ export function defineVariable(name) {
   definedVariables.push(name);
 }
 
+export function genIndex() {
+  return index++;
+}
+
 export function pushBlock(obj) {
   const defaults = {line: line + 1, type: 'none', index};
   blocks.push(Object.assign(defaults, obj));
-  return index++;
+  return genIndex();
 }
 
 export function popBlock() {
