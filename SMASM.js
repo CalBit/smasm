@@ -132,7 +132,7 @@ export function convert(data) {
 
   // Convert
   let convertedProgram = [];
-  convertedProgram.push('__start:');
+  convertedProgram.push('_start:');
   for (line = 0; line < program.length; line++) {
     if (program[line].type === 'blank') {
       convertedProgram.push('');

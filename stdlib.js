@@ -56,9 +56,9 @@ defineCommand('var', args => {
 }, 3);
 defineCommand('init', args => {
   defineVariable(args[0]);
-  return `  jump __init${initIndex} notEqual ${args[0]} null
+  return `  jump _init${initIndex} notEqual ${args[0]} null
   set ${args[0]} ${args[1]}
-__init${initIndex++}:`;
+_init${initIndex++}:`;
 }, 2);
 
 defineCommand('add', (varName, args) => `  op add ${varName} ${args[0]} ${args[1]}`, 2, true);
@@ -160,61 +160,61 @@ defineCommand('unitLocateDamaged', (varName, args) => {
 // Stacks
 defineCommand('defineStack', args => {
   stackCell = args[0];
-  return `  set __top 0`;
+  return `  set _top 0`;
 }, 1);
 defineCommand('push', args => {
   if (stackCell.length === 0)
     warning('There is no stack defined. Is it possible you forgot to define one?');
-  return `  write ${args[0]} ${stackCell} __top
-  op add __top __top 1`;
+  return `  write ${args[0]} ${stackCell} _top
+  op add _top _top 1`;
 }, 1);
 defineCommand('pop', varName => {
   if (stackCell.length === 0)
     warning('There is no stack defined. Is it possible you forgot to define one?');
-  return `  op sub __top __top 1
-  read ${varName} ${stackCell} __top`;
+  return `  op sub _top _top 1
+  read ${varName} ${stackCell} _top`;
 }, 0, true);
 defineCommand('peek', varName => {
   if (stackCell.length === 0)
     warning('There is no stack defined. Is it possible you forgot to define one?');
-  return `  op sub __result __top 1
-  read ${varName} ${stackCell} __result`;
+  return `  op sub _result _top 1
+  read ${varName} ${stackCell} _result`;
 }, 0, true);
 
 // Control flow
 defineCommand('sleep', args => {
-  return `  set __start @time
-__sleep${sleepIndex}:
-  op sub __result @time __start
-  jump __sleep${sleepIndex++} lessThan __result ${args[0]}`;
+  return `  set _start @time
+_sleep${sleepIndex}:
+  op sub _result @time _start
+  jump _sleep${sleepIndex++} lessThan _result ${args[0]}`;
 }, 1);
 defineCommand('jump', args => `  jump ${args[0]} always`, 1);
 defineCommand('loop', args => {
   if (parseInt(args[0]) < 0)
     warning('Argument must be a positive integer');
   const index = pushBlock({type: 'loop', amount: args[0]});
-  return `  set __i${index} 0
-__block${index}:`;
+  return `  set _i${index} 0
+_block${index}:`;
 }, 1);
 defineCommand('endloop', () => {
   const block = popBlock();
   if (block.type !== 'loop')
     warning("No matching 'loop' command");
-  return `  op add __i${block.index} __i${block.index} 1
-  jump __block${block.index} lessThan __i${block.index} ${block.amount}`;
+  return `  op add _i${block.index} _i${block.index} 1
+  jump _block${block.index} lessThan _i${block.index} ${block.amount}`;
 });
 defineCommand('for', args => {
   const index = pushBlock({type: 'for', variable: args[0], end: args[2], step: args[3]});
   defineVariable(args[0]);
   return `  set ${args[0]} ${args[1]}
-__block${index}:`;
+_block${index}:`;
 }, 4);
 defineCommand('endfor', () => {
   const block = popBlock();
   if (block.type !== 'for')
     warning("No matching 'for' command");
   return `  op add ${block.variable} ${block.variable} ${block.step}
-  jump __block${block.index} notEqual ${block.variable} ${block.end}`;
+  jump _block${block.index} notEqual ${block.variable} ${block.end}`;
 });
 defineCommand('if', args => {
   const index = pushBlock({type: 'if', a: args[0], op: args[1], b: args[2]});
@@ -242,7 +242,7 @@ defineCommand('if', args => {
       warning(`The argument '${args[1]}' is not a recognized value`);
       break;
   }
-  return `  jump __block${index} ${op} ${args[0]} ${args[2]}`;
+  return `  jump _block${index} ${op} ${args[0]} ${args[2]}`;
 }, 3);
 defineCommand('else', () => {
   const block = popBlock();
@@ -273,20 +273,20 @@ defineCommand('else', () => {
       warning(`The argument '${args[1]}' is not a recognized value`);
       break;
   }
-  return `__block${block.index}:
-  jump __block${index} ${op} ${block.a} ${block.b}`;
+  return `_block${block.index}:
+  jump _block${index} ${op} ${block.a} ${block.b}`;
 });
 defineCommand('endif', () => {
   const block = popBlock();
   if (block.type !== 'if')
     warning("No matching 'if' or 'else' command");
-  return `__block${block.index}:`;
+  return `_block${block.index}:`;
 });
 defineCommand('while', (args) => {
   const index = pushBlock({type: 'while', a: args[0], op: args[1], b: args[2]});
   if (!['==', '!=', '<', '>', '<=', '>='].includes(args[1]))
     warning(`The argument '${args[1]}' is not a recognized value`);
-  return `__block${index}:`;
+  return `_block${index}:`;
 }, 3);
 defineCommand('endwhile', () => {
   const block = popBlock();
@@ -313,32 +313,32 @@ defineCommand('endwhile', () => {
       op = 'greaterThanEq';
       break;
   }
-  return `  jump __block${block.index} ${op} ${block.a} ${block.b}`;
+  return `  jump _block${block.index} ${op} ${block.a} ${block.b}`;
 });
 
 // Subroutines
 defineCommand('section', args => {
   defineVariable(args[0]);
   const index = pushBlock({type: 'section'});
-  return `  jump __block${index} always
-__section_${args[0]}:`;
+  return `  jump _block${index} always
+_section_${args[0]}:`;
 }, 1);
 defineCommand('endsection', () => {
   const block = popBlock();
   if (block.type !== 'section')
     warning("No matching 'section' command");
-  return `  set @counter __sectionReturn
-__block${block.index}:`;
+  return `  set @counter _sectionReturn
+_block${block.index}:`;
 });
 defineCommand('jumpsection', args => {
-  return `  op add __sectionReturn @counter 1
-  jump __section_${args[0]} always`;
+  return `  op add _sectionReturn @counter 1
+  jump _section_${args[0]} always`;
 }, 1);
 
 // Functions
 defineCommand('defineFunctionStack', args => {
   functionStackCell = args[0];
-  return `  set __call 0`;
+  return `  set _call 0`;
 }, 1);
 defineCommand('function', args => {
   // Make sure functions are enabled
@@ -354,22 +354,22 @@ defineCommand('function', args => {
   functions[args[0]] = peekBlock();
   for (let i = 0; i < args.length; i++)
     defineVariable(args[i]);
-  return `  jump __block${index} always
-__function_${args[0]}:
-  set __return null`;
+  return `  jump _block${index} always
+_function_${args[0]}:
+  set _return null`;
 }, null);
 defineCommand('endfunction', () => {
   const block = popBlock();
   if (block.type !== 'function')
     warning("No matching 'function' command");
-  return `  op sub __call __call 1
-  read @counter ${functionStackCell} __call
-__block${block.index}:`;
+  return `  op sub _call _call 1
+  read @counter ${functionStackCell} _call
+_block${block.index}:`;
 });
 defineCommand('return', args => {
-  return `  set __return ${args[0]}
-  op sub __call __call 1
-  read @counter ${functionStackCell} __call`;
+  return `  set _return ${args[0]}
+  op sub _call _call 1
+  read @counter ${functionStackCell} _call`;
 }, 1);
 defineCommand('call', (varName, args) => {
   // Make sure a function name is provided
@@ -394,9 +394,9 @@ defineCommand('call', (varName, args) => {
   argumentSet = argumentList.join('\n');
 
   return `${argumentSet}
-  op add __result @counter 3
-  write __result ${functionStackCell} __call
-  op add __call __call 1
-  jump __function_${args[0]} always
-  set ${varName} __return`;
+  op add _result @counter 3
+  write _result ${functionStackCell} _call
+  op add _call _call 1
+  jump _function_${args[0]} always
+  set ${varName} _return`;
 }, null, true);
